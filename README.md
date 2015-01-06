@@ -1,4 +1,8 @@
-digital-holography-microscope
+数字全息显微成像仿真
 =============================
 
-digital holography microscope simulation
+这是我2014年微波成像的大作业，
+用Matlab仿真数字全息显微成像。
+理论请参考一篇博士论文
+王华英. 数字全息显微成像的理论和实验研究 [D][D]. 北京工业大学, 2008.
+
