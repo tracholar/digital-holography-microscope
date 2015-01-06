@@ -1,51 +1,63 @@
-Nx = 512; Ny = 512;
+%% 数字全息成像的数值仿真
+% author: 左元
+% email: zuoyuan@mail.ustc.edu.cn
+
+%% 一些常数的定义
+Nx = 512; Ny = 512; 
 dx = 0.01e-3; dy = dx;
+Lx = Nx*dx; Ly = Ny*dy;
 X = 1e-3; Y = X;
-NX = 200; NY = 200;
+
 lambda = 632.8e-9;
 k = 2*pi/lambda;
-z0 = 1e-2;
-alpha = 0;
-beta = 0.001;
-oX = lambda*z0/dx;
-obj = zeros(NX, NY);
+z0 = max((4*X+2*Lx)/lambda*dx, (4*Y+2*Ly)/lambda*dy);
+dx0 = lambda*z0/Nx/dx;
+dy0 = lambda*z0/Ny/dy;
 
-i = NX/2-10:NX/2+10;
-obj(i,NY/2-10) = 1;
-obj(i,NY/2+10) = 1;
+alpha = 0;asin((3*X+Lx)/2/z0); % 参考光角度偏置，将影响干涉图样的频谱分布，调整这个参数可以观察到频谱的变化
+beta = asin((3*Y+Ly)/2/z0);
 
-j = NY/2-10:NY/2+10;
-obj(NX/2-10, j) = 1;
-obj(NX/2+10, j) = 1;
 
-subplot(1,3,1);
+%% 目标物
+obj = im2double(rgb2gray(imread('kuang.jpg')));
+subplot(2,3,1);
 imshow(obj);
 
-EXP = zeros(NX, NY);
-R = zeros(NX,NY);
+%% 参考光
+R = zeros(Nx,Ny);
 
-for i = 1:NX
-    for j = 1:NY
-        EXP(i,j) = exp(sqrt(-1)*2*pi/lambda/2/z0*((i-Nx/2)^2*dx^2+(j-Nx/2)^2*dy^2));
-        R(i,j) = exp(-sqrt(-1)*k*(i*sin(alpha) + j*sin(beta)));
+for i = 1:Nx
+    for j = 1:Ny
+        R(i,j) = exp(-sqrt(-1)*k*((i-Nx/2)*dx*sin(alpha) + (j-Nx/2)*dy*sin(beta)));
     end
 end
 
 
-Obj = EXP .* fft2(obj.*EXP);
-subplot(1,3,2);
+%% 得到CCD接受到的干涉图样
+Obj = fresnelDiffraction(obj, z0, dx0, lambda);
+subplot(2,3,2);
 
+Obj = Obj / max(max(abs(Obj))) * 5; % 对实际值归一化，倍乘数表示相对参考光R的相对强度
 H = abs(Obj+R).^2;
 H = H/max(max(H));
 imshow(H);
 
-subplot(1,3,3);
-fftQxI = fft2(H);
-tmp = log(abs(fftQxI));
-imshow(tmp/max(max(tmp)));
+%% 干涉图样频谱
+subplot(2,3,3);
+fftQxI = fftshift(fft2(H));
+tmp = abs(fftQxI);
+imshow(tmp/max(max(tmp))*20);
 
-CH = conj(R) .* H;
-cstrObj = EXP .* fft2(CH .* EXP);
-cstrObj = abs(cstrObj).^2;
-figure;
-imshow(cstrObj/max(max(cstrObj)));
+%% 
+CH = (R) .* H;
+subplot(2,3,4);
+for zi = linspace(1e-5, z0, 20)
+    constructedObj = fresnelDiffraction(CH, -zi, dx, lambda);
+    coI = abs(fftshift(constructedObj)).^2;
+    imshow(coI/max(max(coI)));
+    pause(.1);
+end
+
+
+% figure;
+% imshow(cstrObj/max(max(cstrObj)));
