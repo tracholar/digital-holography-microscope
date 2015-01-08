@@ -114,7 +114,7 @@ E(x,y; z) = E_0(x , y) \ast S_H(x, y; z)
 \end{equation}
 式中点扩展函数(PSF) $S_H$代表惠更斯球面波，
 \begin{equation}
-S_H(x, y; z) =  - \frac{i k}{2 \pi z} \exp(i k \sqrt{(x-x_0)^2+(y-y_0)^2+z^2})
+S_H(x, y; z) =  - \frac{i k}{2 \pi z} \exp(i k \sqrt{x^2+y^2+z^2})
 \end{equation}
 式(\ref{eq:huygens})表示像平面的光场是由物场所有点源发出的球面波的叠加。
 
@@ -124,6 +124,46 @@ S_H(x, y; z) =  - \frac{i k}{2 \pi z} \exp(i k \sqrt{(x-x_0)^2+(y-y_0)^2+z^2})
   \caption{衍射过程的示意图}
   \label{fig:diffraction}
 \end{figure}
+
+当成像距离满足$z^3\gg\frac{k}{8}[(x-x_0)^2+(y-y_0)^2]_{max}^2$，
+则可以利用菲涅尔近似，将点扩展函数改写为
+\begin{equation}
+S_F(x, y; z) =  - \frac{i k}{2 \pi z} \exp(i k z + \frac{i k}{ 2 z} (x^2+y^2))
+\end{equation}
+利用菲涅尔近似，可以得到菲涅尔衍射公式
+\begin{equation}
+\begin{split}
+E(x, y; z) &=  \iint_{\Sigma_0}dx_0dy_0 E(x_0,y_0) S_F(x-x_0, y-y_0; z) \\
+			&= -\frac{i k}{2 \pi z} e^{i k z} \iint_{\Sigma_0} E(x_0,y_0) e^{ \frac{i k}{ 2 z} [(x-x_0)^2+(y-y_0)^2] } \\
+			&= -\frac{i k}{2 \pi z} e^{i k z} e^{\frac{i k }{2 z} (x^2+y^2)} \iint_{\Sigma_0} E(x_0,y_0) e^{ \frac{i k}{ 2 z} (x_0^2+y_0^2)} e^{- \frac{i k}{ z} (x x_0+y y_0)} \\
+			&= -\frac{i k}{2 \pi z} e^{i k z} e^{\frac{i k }{2 z} (x^2+y^2)} FT\{E(x_0,y_0) e^{ \frac{i k}{ 2 z} (x_0^2+y_0^2)}\} \vert_{f_x = \frac{x}{\lambda z}, f_y = \frac{y}{\lambda z}}
+\end{split}
+\label{eq:fresnel}
+\end{equation}
+其中$FT\{\cdot\}$是傅里叶变换。
+从上式来看，菲涅尔衍射的过程可以看做由如下过程合成，
+首先物场先经过一个物场二次相因子进行相位畸变，然后经过一个傅里叶变换，
+最后再经过像场的二次相因子扭曲。这里略去常数相因子和幅度衰减的影响，并不影响对结果的分析。
+因此，要对衍射过程进行数值仿真，只需按照式(\ref{eq:fresnel})做一次傅里叶变换即可，
+傅里叶变换可以用快速傅里叶变换(FFT)高效地实现，比如在MATLAB中就有fft2这个函数实现二维的快速傅里叶变换。
+
+设物光为$o(x, y)$，进过衍射到达CCD时为$O(x,y)$，到达CCD的参考光为$R(x,y)$。
+CCD最终记录的全息图是二者的干涉图样，即
+\begin{equation}
+H(x,y) = |O+R|^2 = |O|^2 + |R|^2 +RO*+R*O.
+\end{equation}
+若用原参考光照明CCD记录的全息图，则照明后的光场为
+\begin{equation}
+\begin{split}
+U(x,y) &= R(x,y)H(x,y) \\
+		&= R(|O|^2 + |R|^2) + RR*O + RRO* \\
+		&= T_0 + T_{+1} + T_{-1}
+\end{split}		
+\end{equation}
+式中，$T_0$ 表示与重现光波相同的透射光场，称为零级衍射光；
+$T_{+1}$与原始物光波相同，称为+1级衍射光，重现了与原物相同的虚像。
+
+
 
 \section{无透镜傅里叶全息显微}
 
