@@ -1,7 +1,7 @@
 %% 数字全息成像的数值仿真
 % author: 左元
 % email: zuoyuan@mail.ustc.edu.cn
-% 球面波照明和重建
+% 球面波照明和重建，离轴无透镜傅里叶变换全息
 
 %% 一些常数的定义
 Nx = 512; Ny = 512; 
@@ -18,6 +18,7 @@ dy0 = lambda*z0/Ny/dy;
 
 xr = 3/2*X; % 参考光角度偏置，将影响干涉图样的频谱分布，调整这个参数可以观察到频谱的变化
 yr = 3/2*Y;
+
 
 
 %% 目标物
@@ -38,6 +39,8 @@ end
 
 %% 得到CCD接受到的干涉图样
 Obj = fresnelDiffraction(obj, z0, dx0, lambda);
+% Obj = angularSpectrumDiffraction(obj, z0, dx0, lambda);
+
 subplot(2,3,2);
 
 Obj = Obj / max(max(abs(Obj))) * 5; % 对实际值归一化，倍乘数表示相对参考光R的相对强度
@@ -66,7 +69,7 @@ end
 CH = R2 .* H;
 subplot(2,3,4);
 
-animate = 1;
+animate = 0;
 if animate
     for zi = linspace(1e-5, z0, 20)
         constructedObj = fresnelDiffraction(CH, zi, dx, lambda);
