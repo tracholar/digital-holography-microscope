@@ -55,7 +55,7 @@ imshow(tmp/max(max(tmp))*20);
 CH = H;
 subplot(2,3,4);
 
-animate = 0;
+animate = 1;
 if animate
     for zi = linspace(1e-5, z0, 20)
         constructedObj = fresnelDiffraction(CH, zi, dx, lambda);
