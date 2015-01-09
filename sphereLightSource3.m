@@ -1,13 +1,13 @@
 %% 数字全息成像的数值仿真
 % author: 左元
 % email: zuoyuan@mail.ustc.edu.cn
-% 球面波照明和重建，离轴无透镜傅里叶变换全息
+% 球面波照明和重建，离轴无透镜傅里叶变换全息，换一个图片
 
 %% 一些常数的定义
 Nx = 512; Ny = 512; 
 dx = 0.01e-3; dy = dx;
 Lx = Nx*dx; Ly = Ny*dy;
-X = 1e-3; Y = X;
+X = dx*400; Y = X;
 
 lambda = 632.8e-9;
 k = 2*pi/lambda;
@@ -22,7 +22,7 @@ yr = 3/2*Y;
 
 
 %% 目标物
-obj = im2double(rgb2gray(imread('kuang.jpg')));
+obj = im2double(rgb2gray(imread('zkd.jpg')));
 subplot(2,3,1);
 imshow(obj);
 
@@ -83,7 +83,7 @@ else
     imshow(coI/max(max(coI))*20);
 end
 subplot(2,3,5);
-plot(abs(coI(Nx/2,:))/max(max(coI(Nx/2,:))));
+plot(abs(coI(Nx/2,:))/max(coI(Nx/2,:)));
 axis([0 512 0 1]);
 % figure;
 % imshow(cstrObj/max(max(cstrObj)));

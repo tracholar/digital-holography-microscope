@@ -353,19 +353,91 @@ R(x,y) = exp\{\frac{i k}{2 z_r}[(x-x_r)^2+(y-y_r)^2]\}
 \end{split}
 \end{equation}
 
+
+
+
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{kuang_sphere.eps}
+  \caption{离轴无透镜傅里叶变换全息成像仿真结果，依次为，原始目标，全息图，全息图的频谱，菲涅尔重建的强度图，重建强度图的水平中线的强度分布图}
+  \label{fig:res_kuang_sphere}
+\end{figure}
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{zkd.eps}
+  \caption{对中国科大四个字进行离轴无透镜傅里叶变换全息成像仿真，依次为，原始目标，全息图，全息图的频谱，菲涅尔重建的强度图，重建强度图的水平中线的强度分布图}
+  \label{fig:res_kuang_sphere}
+\end{figure}
+
+
+
 对于离轴无透镜傅里叶变换全息成像，记录参考点源位于物平面上，
 即$z_r=z$，代入上式，可以得到简化的结果
 \begin{equation}
 \begin{split}
-\frac{3}{2}X\lex_r\le\frac{\lambda z}{2\Delta x} - \frac{X}{2} \\
-\frac{3}{2}Y\lex_r\le\frac{\lambda z}{2\Delta y} - \frac{Y}{2} 
+\frac{3}{2}X\le x_r\le\frac{\lambda z}{2\Delta x} - \frac{X}{2} \\
+\frac{3}{2}Y\le x_r\le\frac{\lambda z}{2\Delta y} - \frac{Y}{2} 
 \end{split}
 \end{equation}
 根据上式还可以解出最小成像距离
 \begin{equation}
 z_{min} = \max(\frac{4X}{\lambda}\Delta x, \frac{4Y}{\lambda} \Delta y )
 \end{equation}
-\section{总结}
+
+
+在这种情况下，用会聚球面波进行再现，
+\[
+C(x,y) = exp[-\frac{i k }{2 z_c}(x^2+y^2)]
+\]
+由菲涅尔衍射公式，在$z_c$处得再现像光场的复振幅
+\begin{equation}
+\begin{split}
+U_i(x_i,y_i) &= \exp[\frac{i k}{2 z_i}(x_i^2+y_i^2)] FT\{C(x,y)H(x,y)\exp[\frac{i k}{2 z_i}(x^2+y^2)]\}|_{f_x=\frac{x}{\lambda z_i}, f_y=\frac{y}{\lambda z_i}} \\
+			&= \exp[\frac{i k}{2 z_c}(x_i^2+y_i^2)] FT\{ H(x,y)\}|_{f_x=\frac{x}{\lambda z_i}, f_y=\frac{y}{\lambda z_i}}
+\end{split}
+\end{equation}
+可以看出，离轴无透镜傅里叶变换全息成像光路中，
+只需要对全息图做傅里叶变换并乘上一个二次相因子即可。
+如果只考虑强度分布，直接进行傅里叶变换即可！
+
+这里仍然对之前的物体进行仿真，如图\ref{fig:res_kuang_sphere}所示。
+从结果中可以看到，通过菲涅尔衍射公式得到的结果与频谱图是一样的，
+这证明了上述论证的正确性。
+
+
+无透镜傅里叶变换全息具有光路简单，实现方便等优点，
+被广泛应用到生命科学和医学当中\cite{dirksen2001lensless,pushkarsky2014automated}，
+被用来进行显微成像。
+最近，还有人通过在手机上增加少量外设，用手机的摄像头当做记录装置，
+来实现数字全息显微技术，成本低廉\cite{vashist2014cellphone,breslauer2009mobile,tseng2010lensfree}。
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{DHmobile1.png}
+  \caption{在手机上实现无透镜傅里叶全息显微技术\cite{tseng2010lensfree}}
+  \label{fig:DHcellphone1}
+\end{figure}
+
+
+
+
+\section{总结与感悟}
+本文推导了数字全息成像技术中采用平面光和球面光照明的理论公式，
+并根据理论，用数值仿真的方式对菲涅尔重建方法进行验证。
+本文只对离轴的照明的方式进行推导和仿真，事实上同轴方式也是可以的，
+只是需要引入相移技术，通过记录多幅全息图来实现\cite{王华英2008数字全息显微成像的理论和实验研究,kim2010principles}。
+
+在最开始选题时，我找过合成孔径光学成像、光学层析成像、鬼成像等课题，
+觉得合成孔径光学成像和鬼成像过于偏向理论，
+而光学层析成像过于偏重实验，
+指导发现论文\cite{breslauer2009mobile}，看到居然可以在手机上实现全息成像，
+觉得非常有意思，于是进一步找到国内北京理工大学的一篇博士论文，
+有一些理论阐述，于是决定做这个题目。
+通过这次课程大作业，对数字全息成像有了初步了解，
+并且发现他的应用竟然如此之多，尤其是在生命科学和医学领域。
+
 
 
 \bibliographystyle{IEEEtran}
