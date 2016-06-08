@@ -17,7 +17,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{}
-\chead{无透镜傅里叶全息显微}
+\chead{无透镜傅里叶变换全息显微}
 \rhead{左元 SA13006060}
 \lfoot{}
 \cfoot{\thepage}
@@ -31,16 +31,15 @@
 \usepackage{xeCJK}
 \setCJKmainfont{SimSun}
 
-\bibliographystyle{IEEEtran}
-
+\usepackage[margin=1cm]{caption}
 \newcommand{\half}{\frac{1}{2}}	% 1/2
 \renewcommand{\figurename}{图}
 \renewcommand{\tablename}{表}
 
-\title{无透镜傅里叶全息显微}
+\title{无透镜傅里叶变换全息显微}
 \author{左元 SA13006060}
-\date{\today}
-
+%\date{2015-01-14}
+\date{\vspace{-5ex}}
 
 \begin{document}
 
@@ -49,9 +48,10 @@
 \begin{abstract}
 \noindent
 \textbf{摘要：}数字全息技术是光学成像领域一项新兴技术，
-而数字全息显微技术则是应用这种方法实现显微成像的。
+而数字全息显微技术则是应用这种方法实现显微成像的，
+其中采用无透镜傅里叶变换全息显微光路是应用最为广泛的光路。
 在本文中，我首先回顾一下数字全息显微技术的背景，
-接着推导一下成像的理论，并根据理论进行数值仿真，
+接着推导一下数字全息成像和重建的理论，并根据理论进行数值仿真，
 验证理论的正确性。
 \end{abstract}
 
@@ -65,12 +65,12 @@
 但是直到两项关键技术的出现，它的潜能才被完全挖掘出来。
 这两项关键技术分别是以激光器为代表的理想的相干光源，
 还有就是Leith和Upatnieks发明的分立参考光离轴照明技术\cite{leith1962reconstructed}。
-这种照明方式解决了Gabor装置中，重建过程中实像、0级干涉像和共轭像的分离。
+这种照明方式解决了Gabor装置在重建过程中实像、0级干涉像和共轭像的分离。
 之后，全息术的应用得到飞速发展，到现在已是一个成熟的领域了。
 
 对于很多领域的应用来说，实现实时的处理是非常有用的，
-但是用传统实现全息的方式却非常难。
-数字全息术通过利用电子设备代替物理和化学的记录方式，
+但是用传统实现全息的方式却非常困难。
+数字全息术通过利用电子设备如CCD和计算机等代替物理和化学的记录和重建方法，
 利用数值计算模拟光学重建过程，很好的解决了这一问题。
 光场传播可以通过衍射理论进行精确地描述，
 在1967年，Goodman和Lawrence从摄像机中得到的傅里叶全息图，
@@ -82,7 +82,7 @@
 它被广泛应用到生命科学、医学等领域，
 国际上数字全息显微成像的分辨率已经达到横向亚微米量级、轴向纳米量级\cite{kemper2008digital,marquet2005digital,mann2006quantitative}。
 近年来，数字全息显微成像开始考虑向廉价的实现发展，
-通过无透镜傅里叶全息光路，可以在手机上通过增加少量的外设实现\cite{breslauer2009mobile,tseng2010lensfree,vashist2014cellphone}。
+通过无透镜傅里叶变换全息光路，可以在手机上通过增加少量的外设实现\cite{breslauer2009mobile,tseng2010lensfree,vashist2014cellphone}。
 采用这种方式，将有可能让数字全息显微的技术走向每个家庭。
 
 \section{数字全息成像的理论分析}
@@ -245,9 +245,9 @@ CCD成像过程需要对干涉图样进行采样，
 另一方面，偏置角度还受像的可分离性所限制，
 之所以采用离轴方式的光路，
 就是为了让$T_0、T_{-1}、T_{+1}$三个像在重建的时候能够分离开。
-在全息图中，$|R^2|=$常数，频谱是空间频率平面的$\delta$函数，
+在全息图中，$|R|^2=$常数，频谱是空间频率平面的$\delta$函数，
 原始像$R^*O$的频率分布与共轭像$RO^*$共轭，
-而$|O|^2=OO*$是物光自相干产生的图样，
+而$|O|^2=OO^*$是物光自相干产生的图样，
 它最大空间频率分别为\cite{goodman2006傅里叶光学导论}
 \begin{equation}
 (f_{xmax})_{|O|^2} =\frac{X}{\lambda z}, 
@@ -256,8 +256,8 @@ CCD成像过程需要对干涉图样进行采样，
 
 因此，为了将三个像区分开，要求
 \begin{equation}
-(f_{xmin})_{RO^*}= (f_xmax)_{|O^2|},
-(f_{ymin})_{RO^*}= (f_ymax)_{|O^2|}
+(f_{xmin})_{RO^*}= (f_{xmax})_{|O|^2},
+(f_{ymin})_{RO^*}= (f_{ymax})_{|O|^2}
 \end{equation}
 将(\ref{eq:fmax})代入上式可得
 \begin{equation}
@@ -266,7 +266,7 @@ CCD成像过程需要对干涉图样进行采样，
 \frac{-\frac{L_y}{2}+\frac{Y}{2}+z\sin\alpha}{\lambda z} \ge \frac{Y}{\lambda z}
 \end{split}
 \end{equation}
-于是得到离轴菲涅尔全息成像参考光偏置的又一个限制条件，
+于是得到离轴菲涅尔全息成像参考光偏置角度的又一个限制条件，
 即再现像分离条件：
 \begin{equation}
 \begin{split}
@@ -293,7 +293,7 @@ z_y\ge\frac{4Y+2L_y}{\lambda}\Delta y
 \end{equation}
 因此，离轴菲涅尔全息成像最小记录距离如下
 \begin{equation}
-z_{min}=max\{\frac{4X+2L_x}{\lambda}\Delta x, \frac{4Y+2L_y}{\lambda}\Delta y\}
+z_{min}=max(\frac{4X+2L_x}{\lambda}\Delta x, \frac{4Y+2L_y}{\lambda}\Delta y)
 \label{eq:min_z}
 \end{equation}
 
@@ -305,8 +305,15 @@ z_{min}=max\{\frac{4X+2L_x}{\lambda}\Delta x, \frac{4Y+2L_y}{\lambda}\Delta y\}
 重建的时候用参考光或其共轭与全息图相乘，
 然后按照式(\ref{eq:fresnel})计算衍射的像，
 在与成像距离相同或相反的地方可以得到再现像。
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{kuang.eps}
+  \caption{菲涅尔数字全息成像仿真结果，依次为，原始目标，全息图，全息图的频谱，菲涅尔重建的强度图，重建强度图的水平中线的强度分布图}
+  \label{fig:res_kuang}
+\end{figure}
 
-为了验证此结论，我进行了计算机模拟，并与论文\cite{王华英2008数字全息显微成像的理论和实验研究}
+为了验证此结论，我进行了计算机模拟，如图\ref{fig:res_kuang}所示，
+并与论文\cite{王华英2008数字全息显微成像的理论和实验研究}
 中的结果进行比较。
 模拟用的CCD参数为：水平和垂直的像素点为512，
 $\Delta x=\Delta y = 0.01mm$，模拟记录的物体大小为1mm$\times$1mm的矩形框，
@@ -317,12 +324,7 @@ $\Delta x=\Delta y = 0.01mm$，模拟记录的物体大小为1mm$\times$1mm的�
 仿真中选取的偏置角恰好使水平方向可以分离开的临界角，
 而在垂直方向则没有偏置。重建时用的不是原始参考光，而是准直光，即相位是常数。
 
-\begin{figure}[htb]
-  \centering
-  \includegraphics[width=\textwidth]{kuang.eps}
-  \caption{菲涅尔数字全息成像仿真结果，依次为，原始目标，全息图，全息图的频谱，菲涅尔重建的强度图，重建强度图的水平中线的强度分布图}
-  \label{fig:res_kuang}
-\end{figure}
+
 
 根据重建算法，菲涅尔衍射重建公式，
 利用离散傅里叶变换时频域采样间隔的关系，
@@ -335,14 +337,25 @@ $\Delta x=\Delta y = 0.01mm$，模拟记录的物体大小为1mm$\times$1mm的�
 根据仿真的参数设定，计算出成像距离
 为最小成像距离225mm，所以成像分辨率为0.028mm。
 
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{DHmobile1.png}
+  \caption{在手机上实现无透镜傅里叶全息显微技术\cite{tseng2010lensfree}}
+  \label{fig:DHcellphone1}
+\end{figure}
+
 如果不采用平面参考光照明，而是采用球面光照明，
 也可以得到类似的结论，并且用球面波照明还有这样一些好处。
 尤其是按照无透镜傅里叶变换全息术的光路时，
 干涉条纹接近于平行且等间距，这样可以充分利用CCD的有限带宽。
+图\ref{fig:DHcellphone1}是一个利用手机的CCD实现的无透镜傅里叶变换全息显微的光路。
+子图A是光路的示意图，从右往左看，首先LED发出的准单色光通过透镜组聚焦到像平面，
+一部分光用于照明样品，另一部分光直接到达CCD相机，与物光发生干涉。
+
 
 当采用离轴球面光照明时，到达CCD的参考光在菲涅尔近似下可以写为
 \begin{equation}
-R(x,y) = exp\{\frac{i k}{2 z_r}[(x-x_r)^2+(y-y_r)^2]\}
+R(x,y) = \exp(\frac{i k}{2 z_r}[(x-x_r)^2+(y-y_r)^2])
 \end{equation}
 其中$z_r, x_r, y_r$分别是光源离CCD的距离，离轴的水平距离和垂直距离。
 和上面进行类似的推导，可以得到偏置$x_r,y_r$以及成像的距离所满足的约束条件
@@ -352,6 +365,7 @@ R(x,y) = exp\{\frac{i k}{2 z_r}[(x-x_r)^2+(y-y_r)^2]\}
 \frac{z_r}{z}\frac{3Y}{2} + (\frac{z_r}{z}-1)\frac{L_y}{2} \le y_r \le \frac{\lambda z_r}{2\Delta y} - (\frac{z_r}{z}-1)\frac{L_y}{2}-\frac{z_r}{z}\frac{Y}{2} 
 \end{split}
 \end{equation}
+
 
 
 
@@ -368,7 +382,7 @@ R(x,y) = exp\{\frac{i k}{2 z_r}[(x-x_r)^2+(y-y_r)^2]\}
   \centering
   \includegraphics[width=\textwidth]{zkd.eps}
   \caption{对中国科大四个字进行离轴无透镜傅里叶变换全息成像仿真，依次为，原始目标，全息图，全息图的频谱，菲涅尔重建的强度图，重建强度图的水平中线的强度分布图}
-  \label{fig:res_kuang_sphere}
+  \label{fig:res_zkd}
 \end{figure}
 
 
@@ -402,7 +416,7 @@ U_i(x_i,y_i) &= \exp[\frac{i k}{2 z_i}(x_i^2+y_i^2)] FT\{C(x,y)H(x,y)\exp[\frac{
 只需要对全息图做傅里叶变换并乘上一个二次相因子即可。
 如果只考虑强度分布，直接进行傅里叶变换即可！
 
-这里仍然对之前的物体进行仿真，如图\ref{fig:res_kuang_sphere}所示。
+这里仍然对之前的物体进行仿真，如图\ref{fig:res_kuang_sphere}和图\ref{fig:res_zkd}所示。
 从结果中可以看到，通过菲涅尔衍射公式得到的结果与频谱图是一样的，
 这证明了上述论证的正确性。
 
@@ -412,13 +426,6 @@ U_i(x_i,y_i) &= \exp[\frac{i k}{2 z_i}(x_i^2+y_i^2)] FT\{C(x,y)H(x,y)\exp[\frac{
 被用来进行显微成像。
 最近，还有人通过在手机上增加少量外设，用手机的摄像头当做记录装置，
 来实现数字全息显微技术，成本低廉\cite{vashist2014cellphone,breslauer2009mobile,tseng2010lensfree}。
-
-\begin{figure}[htb]
-  \centering
-  \includegraphics[width=\textwidth]{DHmobile1.png}
-  \caption{在手机上实现无透镜傅里叶全息显微技术\cite{tseng2010lensfree}}
-  \label{fig:DHcellphone1}
-\end{figure}
 
 
 
@@ -432,8 +439,8 @@ U_i(x_i,y_i) &= \exp[\frac{i k}{2 z_i}(x_i^2+y_i^2)] FT\{C(x,y)H(x,y)\exp[\frac{
 在最开始选题时，我找过合成孔径光学成像、光学层析成像、鬼成像等课题，
 觉得合成孔径光学成像和鬼成像过于偏向理论，
 而光学层析成像过于偏重实验，
-指导发现论文\cite{breslauer2009mobile}，看到居然可以在手机上实现全息成像，
-觉得非常有意思，于是进一步找到国内北京理工大学的一篇博士论文，
+直到发现论文\cite{breslauer2009mobile}，看到居然可以在手机上实现全息成像，
+觉得非常有意思，于是进一步找到国内北京工业大学的一篇博士论文，
 有一些理论阐述，于是决定做这个题目。
 通过这次课程大作业，对数字全息成像有了初步了解，
 并且发现他的应用竟然如此之多，尤其是在生命科学和医学领域。
